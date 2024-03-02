@@ -13,4 +13,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Blazored.Modal">
+      <HintPath>..\..\Modal\src\Blazored.Modal\bin\Debug\net8.0\Blazored.Modal.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

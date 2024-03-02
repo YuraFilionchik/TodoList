@@ -1,0 +1,72 @@
+﻿@inject TodoList.Data.ApplicationDbContext DB
+@using TodoList
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h4>TodoItem</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="TodoItem" OnValidSubmit="AddTodoItem" FormName="create" Enhance>
+            <ValidationSummary class="text-danger" />
+            <div class="mb-3">
+                <label for="title" class="form-label">Title:</label> 
+                <InputText id="title" @bind-Value="TodoItem.Title" class="form-control" /> 
+                <ValidationMessage For="() => TodoItem.Title" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="isdone" class="form-label">IsDone:</label> 
+                <InputCheckbox id="isdone" @bind-Value="TodoItem.IsDone" class="form-check-input" /> 
+                <ValidationMessage For="() => TodoItem.IsDone" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="description" class="form-label">Description:</label> 
+                <InputText id="description" @bind-Value="TodoItem.Description" class="form-control" /> 
+                <ValidationMessage For="() => TodoItem.Description" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="createddate" class="form-label">CreatedDate:</label> 
+                <InputDate id="createddate" @bind-Value="TodoItem.CreatedDate" class="form-control" /> 
+                <ValidationMessage For="() => TodoItem.CreatedDate" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="isdeleted" class="form-label">IsDeleted:</label> 
+                <InputCheckbox id="isdeleted" @bind-Value="TodoItem.IsDeleted" class="form-check-input" /> 
+                <ValidationMessage For="() => TodoItem.IsDeleted" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="duedate" class="form-label">DueDate:</label> 
+                <InputDate id="duedate" @bind-Value="TodoItem.DueDate" @Value="@DateTime.Now" class="form-control" /> 
+                <ValidationMessage For="() => TodoItem.DueDate" class="text-danger" /> 
+            </div>        
+            <button type="submit" class="btn btn-primary">Create</button>
+
+            @*  <div class="mb-3">
+            <label for="tags" class="form-label">Tags:</label>
+            <InputText id="tags" @bind-Value="TodoItem.Tags" class="form-control" />
+            <ValidationMessage For="() => TodoItem.Tags" class="text-danger" />
+            </div>   *@
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/">Back to List</a>
+</div>
+
+@code {
+
+    [SupplyParameterFromForm]
+    public TodoItem TodoItem { get; set; } = new();
+
+    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    public async Task AddTodoItem()
+    {
+        DB.TodoItem.Add(TodoItem);
+        await DB.SaveChangesAsync();
+        NavigationManager.NavigateTo("/");
+    }
+}

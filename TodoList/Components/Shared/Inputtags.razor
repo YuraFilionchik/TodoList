@@ -1,0 +1,22 @@
+﻿
+<label for="tags" class="form-label">Tags:</label>
+<InputText id="tags" @bind-Value="tagString" class="form-control" />
+
+@code {
+    [Parameter]
+    public List<string> Tags { get; set; }
+
+    private string tagString { get => GetTagString(); set => SetTags(value); } 
+
+    private string GetTagString()
+    {
+        return string.Join(", ", Tags);
+    }
+
+    private void SetTags(string value)
+    {
+        Tags = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                     .Select(tag => tag.Trim()).ToList();
+    }
+
+}

@@ -1,7 +1,39 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using TodoList.Components.Pages.TodoItemPages
+@inject TodoList.Data.ApplicationDbContext DB
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+@* <div id="menu">
+    <ul>
+        <li class="active"><a href="#">Все заметки</a></li>
+        <li><a href="#">Личные</a></li>
+        <li><a href="#">Работа</a></li>
+        <li><a href="#">Учеба</a></li>
+        <li><a href="#">Покупки</a></li>
+        <li><a href="#">Путешествия</a></li>
+        <li><button>Добавить заметку</button></li>
+    </ul>
+</div> *@
+<PageTitle>Welcome</PageTitle>
 
-<h1>Hello, world!</h1>
+<h2>ToDo list</h2>
+<Index DisplayDeleted=@DisplayDeletedItems/>
+<div>
+    <button @onclick="ShowModal">Add New item</button>
+    <br/>
+    <NavLink href="todoitems">View all items</NavLink>
+</div>
+Show deleted items:<InputCheckbox @bind-Value="DisplayDeletedItems"></InputCheckbox>
+<p>Display deleted = @DisplayDeletedItems</p>
 
-Welcome to your new app.
+@code { 
+
+    public bool DisplayDeletedItems { get; set; } = false;
+
+    [CascadingParameter] public IModalService BlazoredModal { get; set; } = default!;
+
+    void ShowModal()
+        => BlazoredModal.Show<Additem>("Welcome to Blazored Modal");
+}

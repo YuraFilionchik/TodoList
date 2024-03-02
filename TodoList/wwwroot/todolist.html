@@ -1,0 +1,20 @@
+<html><head>    <style>        * {            box-sizing: border-box;            margin: 0;            padding: 0;        }
+    #menu {            width: 20%;            height: 100vh;            background-color: #f0f0f0;            overflow-y: auto;        }
+    #menu ul {            list-style: none;        }
+    #menu li {            padding: 10px;            border-bottom: 1px solid #ccc;        }
+    #menu li:hover {            background-color: #e0e0e0;        }
+    #menu li.active {            background-color: #d0d0d0;        }
+    #menu li a {            text-decoration: none;            color: #000;        }
+    #menu li button {            float: right;        }
+    #content {            width: 80%;            height: 100vh;            overflow-y: auto;        }
+    #content ul {            list-style: none;        }
+    #content li {            padding: 10px;            border-bottom: 1px solid #ccc;        }
+    #content li h3 {            font-size: 18px;        }
+    #content li p {            font-size: 14px;            color: #888;        }
+    #content li input[type=checkbox] {            margin-right: 10px;        }
+    #content li input[type=checkbox]:checked + h3 {            text-decoration: line-through;            color: #aaa;        }
+    #content li input[type=checkbox]:checked + h3 + p {            display: none;        }
+    #note {            display: none;            width: 80%;            height: 100vh;            position: absolute;            top: 0;            right: 0;            background-color: #fff;            padding: 20px;        }
+    #note h3 {            font-size: 24px;            margin-bottom: 10px;        }
+    #note textarea {            width: 100%;            height: 80%;            resize: none;            font-size: 16px;        }
+    #note button {            margin-top: 10px;        }    </style></head><body>    <div id="menu">        <ul>            <li class="active"><a href="#">Все заметки</a></li>            <li><a href="#">Личные</a></li>            <li><a href="#">Работа</a></li>            <li><a href="#">Учеба</a></li>            <li><a href="#">Покупки</a></li>            <li><a href="#">Путешествия</a></li>            <li><button>Добавить заметку</button></li>        </ul>    </div>    <div id="content">        <ul>            <li>                <input type="checkbox">                <h3>Сделать домашнее задание по математике</h3>                <p>Срок: 01.03.2024</p>            </li>            <li>                <input type="checkbox">                <h3>Купить подарок для мамы</h3>                <p>Срок: 08.03.2024</p>            </li>            <li>                <input type="checkbox" checked>                <h3>Записаться на курс по веб-разработке</h3>                <p>Срок: 28.02.2024</p>            </li>            <li>                <input type="checkbox">                <h3>Забронировать билеты в Париж</h3>                <p>Срок: 15.03.2024</p>            </li>        </ul>    </div>    <div id="note">        <h3>Заголовок заметки</h3>        <textarea>Текст заметки</textarea>        <button>Сохранить</button>        <button>Удалить</button>    </div></body></html>

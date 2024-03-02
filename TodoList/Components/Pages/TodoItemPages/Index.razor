@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Components.QuickGrid
+@inject TodoList.Data.ApplicationDbContext DB
+@using TodoList
+
+
+<QuickGrid Class="table" Items="DB.TodoItem.Where(x=> (!x.IsDeleted) || DisplayDeleted)">
+    <PropertyColumn Property="todoitem => todoitem.Title" />
+    <PropertyColumn Property="todoitem => todoitem.IsDone" />
+    <PropertyColumn Property="todoitem => todoitem.Description" />
+    <PropertyColumn Property="todoitem => todoitem.CreatedDate" />
+    <PropertyColumn Property="todoitem => todoitem.UpdatedDate" />
+    <PropertyColumn Property="todoitem => todoitem.IsDeleted" />
+    <PropertyColumn Property="todoitem => todoitem.DueDate" />
+    <PropertyColumn Property="todoitem => todoitem.Tags" />
+    <PropertyColumn Property="todoitem => todoitem.Priority" />
+
+    <TemplateColumn Context="todoitem">
+        <a href="@($"todoitems/edit?id={todoitem.Id}")">Edit</a> |
+        <a href="@($"todoitems/details?id={todoitem.Id}")">Details</a> |
+        <a href="@($"todoitems/delete?id={todoitem.Id}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    [Parameter]
+    public bool DisplayDeleted { get; set; } = false;
+
+}

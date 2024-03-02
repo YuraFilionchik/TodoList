@@ -1,20 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 namespace TodoList;
 
 public class TodoItem
 {
     public int Id { get; set; }
-    public string? Title { get; set; }
+    public string Title { get; set; } = string.Empty;
     public bool IsDone { get; set; } = false;
     public string? Description { get; set; }
     [DataType(DataType.DateTime)]
-    public DateTime? CreatedDate { get; set; } = default(DateTime?);
+    public DateTime CreatedDate { get; set; } = DateTime.Now;
     [DataType(DataType.DateTime)]
-    public DateTime? UpdatedDate { get; } = default(DateTime?);
-    public bool? IsDeleted { get; set; } = false;
+    [ValidateNever]
+    public DateTime? UpdatedDate { get; set; } = DateTime.Now;
+    public bool IsDeleted { get; set; } = false;
     [DataType(DataType.DateTime)]
+    [ValidateNever]
     public DateTime? DueDate { get; set; }
-    public String Tags { get; set; } = String.Empty;
+    public string Tags { get; set; } = string.Empty;
     public PriorityType Priority { get; set; } = PriorityType.Medium;
     
 }
