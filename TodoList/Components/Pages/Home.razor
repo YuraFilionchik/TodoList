@@ -21,19 +21,31 @@
 <h2>ToDo list</h2>
 <Index DisplayDeleted=@DisplayDeletedItems/>
 <div>
-    <button @onclick="ShowModal">Add New item</button>
+    <button class="btn btn-primary" @onclick="ShowModalAddNew">Add New item</button>
     <br/>
     <NavLink href="todoitems">View all items</NavLink>
 </div>
 Show deleted items:<InputCheckbox @bind-Value="DisplayDeletedItems"></InputCheckbox>
 <p>Display deleted = @DisplayDeletedItems</p>
 
-@code { 
+@code {
 
     public bool DisplayDeletedItems { get; set; } = false;
 
     [CascadingParameter] public IModalService BlazoredModal { get; set; } = default!;
 
-    void ShowModal()
-        => BlazoredModal.Show<Additem>("Welcome to Blazored Modal");
+    async Task ShowModalAddNew()
+    {
+        TodoItem? todoItem = new TodoItem();
+        var messageForm = BlazoredModal.Show<Additem>();
+        var result = await messageForm.Result;
+
+        if (result.Cancelled) return;
+
+        todoItem = result.Data is null ? null:(TodoItem)result.Data;
+        if (todoItem is null) return;
+        DB.TodoItem.Add(todoItem);
+        DB.SaveChanges();
+        //StateHasChanged();
+    }
 }

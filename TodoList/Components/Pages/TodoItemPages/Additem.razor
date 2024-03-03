@@ -1,43 +1,43 @@
 ﻿@page "/additem"
-@inject TodoList.Data.ApplicationDbContext DB
+
 @using TodoList
-@inject NavigationManager NavigationManager
 <link rel="stylesheet" href="TodoList.styles.css" />
 <div class="row">
     <div class="col-md-4">
-        <EditForm method="post" Model="TodoItem" OnValidSubmit="AddTodoItem" FormName="create" Enhance>
+        <EditForm method="post" Model="todoItem" OnValidSubmit="SubmitForm" FormName="create" Enhance>
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
-                <label for="title" class="form-label">Title:</label> 
-                <InputText id="title" @bind-Value="TodoItem.Title" class="form-control" /> 
-                <ValidationMessage For="() => TodoItem.Title" class="text-danger" /> 
+                <label for="title" class="form-label">Title:</label>
+                <InputText  id="title" @bind-Value="todoItem.Title" class="form-control" />
+                <Autofocus @elementId="title" />
+                <ValidationMessage For="() => todoItem.Title" class="text-danger" /> 
             </div>        
                   
             <div class="mb-3">
                 <label for="description" class="form-label">Description:</label> 
-                <InputText id="description" @bind-Value="TodoItem.Description" class="form-control" /> 
-                <ValidationMessage For="() => TodoItem.Description" class="text-danger" /> 
+                <InputText id="description" @bind-Value="todoItem.Description" class="form-control" /> 
+                <ValidationMessage For="() => todoItem.Description" class="text-danger" /> 
             </div>        
             <div class="mb-3">
                 <label for="duedate" class="form-label">DueDate:</label> 
-                <InputDate id="duedate" @bind-Value="TodoItem.DueDate" class="form-control" /> 
-                <ValidationMessage For="() => TodoItem.DueDate" class="text-danger" /> 
+                <InputDate id="duedate" @bind-Value="todoItem.DueDate" class="form-control" /> 
+                <ValidationMessage For="() => todoItem.DueDate" class="text-danger" /> 
             </div>        
             <div class="mb-3">
                 <label for="tags" class="form-label">Tags:</label> 
-                <InputText id="tags" @bind-Value="TodoItem.Tags" class="form-control" /> 
-                <ValidationMessage For="() => TodoItem.Tags" class="text-danger" /> 
+                <InputText id="tags" @bind-Value="todoItem.Tags" class="form-control" /> 
+                <ValidationMessage For="() => todoItem.Tags" class="text-danger" /> 
             </div>        
             <div class="mb-3">
                 <label for="priority" class="form-label">Priority:</label> 
-                <InputSelect id="priority" @bind-Value="TodoItem.Priority" class="form-control">
+                <InputSelect id="priority" @bind-Value="todoItem.Priority" class="form-control">
                     @foreach (PriorityType priority in Enum.GetValues(typeof(PriorityType)))
                     {
                         <option value="@priority">@priority.ToString()</option>
                     }
                 </InputSelect> 
-                <ValidationMessage For="() => TodoItem.Priority" class="text-danger" /> 
+                <ValidationMessage For="() => todoItem.Priority" class="text-danger" /> 
             </div>        
             <button type="submit" class="btn btn-primary">Create</button>
         </EditForm>
@@ -49,16 +49,10 @@
     [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
     [SupplyParameterFromForm]
-    public TodoItem TodoItem { get; set; } = new();
-
-    async Task Close() => await BlazoredModal.CloseAsync(ModalResult.Ok(true));
+    public TodoItem todoItem { get; set; } = new() { DueDate=DateTime.Now};
+    protected override void OnInitialized() => BlazoredModal.SetTitle("Enter new task");
+    async Task SubmitForm() => await BlazoredModal.CloseAsync(ModalResult.Ok(todoItem));
     async Task Cancel() => await BlazoredModal.CancelAsync();
 
-    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-    public async Task AddTodoItem()
-    {
-        DB.TodoItem.Add(TodoItem);
-        await DB.SaveChangesAsync();
-        //NavigationManager.NavigateTo("/");
-    }
+    
 }
