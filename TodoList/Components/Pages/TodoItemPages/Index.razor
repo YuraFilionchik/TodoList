@@ -3,7 +3,7 @@
 @using TodoList
 
 
-<QuickGrid Class="table" Items="DB.TodoItem.Where(x=> (!x.IsDeleted) || DisplayDeleted)">
+<QuickGrid Class="table" Items="DB.TodoItem.Where(x=> (!x.IsDeleted) || DisplayDeleted)" @ref="itemgrid">
     <PropertyColumn Property="todoitem => todoitem.Title" />
     <PropertyColumn Property="todoitem => todoitem.IsDone" />
     <PropertyColumn Property="todoitem => todoitem.Description" />
@@ -25,4 +25,15 @@
     [Parameter]
     public bool DisplayDeleted { get; set; } = false;
 
+    [Parameter]
+    public QuickGrid<TodoItem> itemgrid { get; set; }
+
+    [Parameter]
+    public EventCallback<QuickGrid<TodoItem>> itemgridChanged { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await itemgridChanged.InvokeAsync(itemgrid);
+    }
 }

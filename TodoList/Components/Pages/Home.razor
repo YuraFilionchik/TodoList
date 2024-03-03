@@ -19,7 +19,7 @@
 <PageTitle>Welcome</PageTitle>
 
 <h2>ToDo list</h2>
-<Index DisplayDeleted=@DisplayDeletedItems/>
+<Index DisplayDeleted=@DisplayDeletedItems @bind-itemgrid="itemgrid"/>
 <div>
     <button class="btn btn-primary" @onclick="ShowModalAddNew">Add New item</button>
     <br/>
@@ -34,11 +34,12 @@ Show deleted items:<InputCheckbox @bind-Value="DisplayDeletedItems"></InputCheck
 
     [CascadingParameter] public IModalService BlazoredModal { get; set; } = default!;
 
+    QuickGrid<TodoItem> itemgrid;
+
     async Task ShowModalAddNew()
     {        
         var messageForm = BlazoredModal.Show<Additem>();
         var result = await messageForm.Result;
-
-        StateHasChanged();
+       await itemgrid.RefreshDataAsync();
     }
 }
