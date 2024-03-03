@@ -1,7 +1,7 @@
-﻿let SetCustomFocus = SetCustomFocus || {};
-SetCustomFocus.setFocus = function (elementId) {
+﻿function SetFocus (elementId) {
     var element = document.getElementById(elementId);
     if (element) {
         element.focus();
     }
 };
+

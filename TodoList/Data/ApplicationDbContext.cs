@@ -6,6 +6,7 @@ namespace TodoList.Data
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
     {
-        public DbSet<TodoList.TodoItem> TodoItem { get; set; } = default!;
+        public DbSet<TodoList.TodoItem> TodoItem { get; set; }
+        public DbSet<testItem> testItem { get; set; }
     }
 }

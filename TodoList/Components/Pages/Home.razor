@@ -35,17 +35,10 @@ Show deleted items:<InputCheckbox @bind-Value="DisplayDeletedItems"></InputCheck
     [CascadingParameter] public IModalService BlazoredModal { get; set; } = default!;
 
     async Task ShowModalAddNew()
-    {
-        TodoItem? todoItem = new TodoItem();
+    {        
         var messageForm = BlazoredModal.Show<Additem>();
         var result = await messageForm.Result;
 
-        if (result.Cancelled) return;
-
-        todoItem = result.Data is null ? null:(TodoItem)result.Data;
-        if (todoItem is null) return;
-        DB.TodoItem.Add(todoItem);
-        DB.SaveChanges();
-        //StateHasChanged();
+        StateHasChanged();
     }
 }

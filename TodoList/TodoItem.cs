@@ -11,14 +11,19 @@ public class TodoItem
     public string? Description { get; set; }
     [DataType(DataType.DateTime)]
     public DateTime CreatedDate { get; set; } = DateTime.Now;
+
     [DataType(DataType.DateTime)]
-    [ValidateNever]
     public DateTime? UpdatedDate { get; set; } = DateTime.Now;
     public bool IsDeleted { get; set; } = false;
     [DataType(DataType.DateTime)]
-    [ValidateNever]
     public DateTime? DueDate { get; set; }
     public string Tags { get; set; } = string.Empty;
     public PriorityType Priority { get; set; } = PriorityType.Medium;
     
+}
+
+public class testItem
+{
+    public int Id { get; set; }
+    public string name { get; set; }
 }
