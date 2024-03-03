@@ -1,0 +1,12 @@
+﻿@inject IJSRuntime JSRuntime
+
+@code {
+    [Parameter]
+    public string elementId { get; set; } = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await JSRuntime.InvokeVoidAsync("SetCustomFocus.setFocus", elementId);
+    }
+}
