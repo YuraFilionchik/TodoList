@@ -18,8 +18,8 @@
 </div> *@
 <PageTitle>Welcome</PageTitle>
 
-<h2>ToDo list</h2>
-<Index DisplayDeleted=@DisplayDeletedItems @bind-itemgrid="itemgrid"/>
+<h2>ToDo list (Total = @DB.TodoItem.Count() | active = @DB.TodoItem.Count(c=>!c.IsDeleted))</h2>
+<Index DisplayDeleted=@DisplayDeletedItems @bind-itemgrid="itemgrid" DataChanged="IndexDataChanged"/>
 <div>
     <button class="btn btn-primary" @onclick="ShowModalAddNew">Add New item</button>
     <br/>
@@ -40,6 +40,14 @@ Show deleted items:<InputCheckbox @bind-Value="DisplayDeletedItems"></InputCheck
     {        
         var messageForm = BlazoredModal.Show<Additem>();
         var result = await messageForm.Result;
-       await itemgrid.RefreshDataAsync();
+        await itemgrid.RefreshDataAsync();
+    }
+
+    public void IndexDataChanged(string data)
+    {
+        if (data == "DeletedItem")
+        {
+            StateHasChanged();
+        }
     }
 }

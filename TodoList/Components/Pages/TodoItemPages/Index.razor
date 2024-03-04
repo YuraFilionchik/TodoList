@@ -15,9 +15,9 @@
     <PropertyColumn Property="todoitem => todoitem.Priority" />
 
     <TemplateColumn Context="todoitem">
+        <button @onclick="@(e => DeleteItem(todoitem))">Delete</button>
         <a href="@($"todoitems/edit?id={todoitem.Id}")">Edit</a> |
         <a href="@($"todoitems/details?id={todoitem.Id}")">Details</a> |
-        <a href="@($"todoitems/delete?id={todoitem.Id}")">Delete</a>
     </TemplateColumn>
 </QuickGrid>
 
@@ -31,9 +31,21 @@
     [Parameter]
     public EventCallback<QuickGrid<TodoItem>> itemgridChanged { get; set; }
 
+    [Parameter]
+    public EventCallback<string> DataChanged { get; set; }
+
+    //for update state after adding new
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
             await itemgridChanged.InvokeAsync(itemgrid);
+    }
+
+    void DeleteItem(TodoItem item)
+    {
+        item.IsDeleted = true;
+        DB.SaveChanges();
+        StateHasChanged();
+        DataChanged.InvokeAsync(nameof(DeleteItem));  
     }
 }
