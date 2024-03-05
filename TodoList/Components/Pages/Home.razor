@@ -18,8 +18,10 @@
 </div> *@
 <PageTitle>Welcome</PageTitle>
 
-<h2>ToDo list (Total = @DB.TodoItem.Count() | active = @DB.TodoItem.Count(c=>!c.IsDeleted))</h2>
-<Index DisplayDeleted=@DisplayDeletedItems @bind-itemgrid="itemgrid" DataChanged="IndexDataChanged"/>
+<h2>ToDo list</h2>
+<CascadingValue Value="@DisplayDeletedItems">
+<Index  @bind-itemgrid="itemgrid" />
+</CascadingValue>
 <div>
     <button class="btn btn-primary" @onclick="ShowModalAddNew">Add New item</button>
     <br/>
@@ -43,11 +45,12 @@ Show deleted items:<InputCheckbox @bind-Value="DisplayDeletedItems"></InputCheck
         await itemgrid.RefreshDataAsync();
     }
 
-    public void IndexDataChanged(string data)
+    public  void IndexDataChanged(string data)
     {
         if (data == "DeletedItem")
         {
-            StateHasChanged();
+            //Task.Delay(700);
+            //StateHasChanged();
         }
     }
 }

@@ -2,8 +2,11 @@
 @inject TodoList.Data.ApplicationDbContext DB
 @using TodoList
 
-
-<QuickGrid Class="table" Items="DB.TodoItem.Where(x=> (!x.IsDeleted) || DisplayDeleted)" @ref="itemgrid">
+@foreach (var item in DB.TodoItem.Where(x => (!x.IsDeleted) || DisplayDeletedItems))
+{
+    <Todoelement Item="item"></Todoelement>
+}
+@* <QuickGrid Class="table" Items="DB.TodoItem.Where(x=> (!x.IsDeleted) || DisplayDeletedItems)" @ref="itemgrid">
     <PropertyColumn Property="todoitem => todoitem.Title" />
     <PropertyColumn Property="todoitem => todoitem.IsDone" />
     <PropertyColumn Property="todoitem => todoitem.Description" />
@@ -19,11 +22,11 @@
         <a href="@($"todoitems/edit?id={todoitem.Id}")">Edit</a> |
         <a href="@($"todoitems/details?id={todoitem.Id}")">Details</a> |
     </TemplateColumn>
-</QuickGrid>
+</QuickGrid> *@
 
 @code {
-    [Parameter]
-    public bool DisplayDeleted { get; set; } = false;
+    [CascadingParameter]
+    public bool DisplayDeletedItems { get; set; } = false;
 
     [Parameter]
     public QuickGrid<TodoItem> itemgrid { get; set; }
@@ -46,6 +49,6 @@
         item.IsDeleted = true;
         DB.SaveChanges();
         StateHasChanged();
-        DataChanged.InvokeAsync(nameof(DeleteItem));  
+        //DataChanged.InvokeAsync(nameof(DeleteItem));  
     }
 }
