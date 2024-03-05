@@ -1,10 +1,14 @@
-﻿<div class="card">
+﻿@rendermode InteractiveServer
+
+<div class="card">
     <div class="card-header">
         @Item.Title
     </div>
     <div class="card-body">
-        <p><strong>Priority:</strong> @Item.Priority</p>
-        <p><strong>Due Date:</strong> @Item.DueDate.HasValue ? TodoItem.DueDate.Value.ToShortDateString() : "Not specified"</p>
+        <div class="card-footer">
+            <span class="card-footer-priority">Priority: @Item.Priority</span>
+            <span class="card-footer-duedate">Due Date: @(Item.DueDate.HasValue ? Item.DueDate.Value.ToShortDateString() : "Not specified")</span>
+        </div>
     </div>
 </div>
 
@@ -13,9 +17,5 @@
 @code {
     [Parameter]
     public TodoItem Item { get; set; }
-
-    [CascadingParameter]
-    public bool DisplayDeletedItems { get; set; } = false;
-
 
 }

@@ -1,0 +1,16 @@
+﻿@rendermode InteractiveServer
+
+<div class="viewitems-body">
+    
+    @foreach (var item in items)
+    {
+        <Todoelement Item="item"></Todoelement>
+    }
+</div>
+
+
+@code {
+    [Parameter]
+    public IEnumerable<TodoItem> items { get; set; } = default!;
+
+}

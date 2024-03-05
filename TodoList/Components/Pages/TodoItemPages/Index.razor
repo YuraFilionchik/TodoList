@@ -1,41 +1,26 @@
 ﻿@using Microsoft.AspNetCore.Components.QuickGrid
 @inject TodoList.Data.ApplicationDbContext DB
+@using Microsoft.EntityFrameworkCore
 @using TodoList
+@rendermode InteractiveServer
 
-@foreach (var item in DB.TodoItem.Where(x => (!x.IsDeleted) || DisplayDeletedItems))
-{
-    <Todoelement Item="item"></Todoelement>
-}
-@* <QuickGrid Class="table" Items="DB.TodoItem.Where(x=> (!x.IsDeleted) || DisplayDeletedItems)" @ref="itemgrid">
-    <PropertyColumn Property="todoitem => todoitem.Title" />
-    <PropertyColumn Property="todoitem => todoitem.IsDone" />
-    <PropertyColumn Property="todoitem => todoitem.Description" />
-    <PropertyColumn Property="todoitem => todoitem.CreatedDate" />
-    <PropertyColumn Property="todoitem => todoitem.UpdatedDate" />
-    <PropertyColumn Property="todoitem => todoitem.IsDeleted" />
-    <PropertyColumn Property="todoitem => todoitem.DueDate" />
-    <PropertyColumn Property="todoitem => todoitem.Tags" />
-    <PropertyColumn Property="todoitem => todoitem.Priority" />
+<ViewItems items="DB.TodoItem.Where(x => (!x.IsDeleted) || DisplayDeletedItems)" @ref="itemgrid"></ViewItems>
 
-    <TemplateColumn Context="todoitem">
-        <button @onclick="@(e => DeleteItem(todoitem))">Delete</button>
-        <a href="@($"todoitems/edit?id={todoitem.Id}")">Edit</a> |
-        <a href="@($"todoitems/details?id={todoitem.Id}")">Details</a> |
-    </TemplateColumn>
-</QuickGrid> *@
 
 @code {
     [CascadingParameter]
-    public bool DisplayDeletedItems { get; set; } = false;
+    public bool DisplayDeletedItems { get; set; }
 
     [Parameter]
-    public QuickGrid<TodoItem> itemgrid { get; set; }
+    public ViewItems itemgrid { get; set; }
 
     [Parameter]
-    public EventCallback<QuickGrid<TodoItem>> itemgridChanged { get; set; }
+    public EventCallback<ViewItems> itemgridChanged { get; set; }
 
     [Parameter]
     public EventCallback<string> DataChanged { get; set; }
+
+    public IQueryable<TodoItem> ItemsToDisplay = default!;
 
     //for update state after adding new
     protected override async Task OnAfterRenderAsync(bool firstRender)

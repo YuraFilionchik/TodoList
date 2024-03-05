@@ -5,44 +5,32 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
-@* <div id="menu">
-    <ul>
-        <li class="active"><a href="#">Все заметки</a></li>
-        <li><a href="#">Личные</a></li>
-        <li><a href="#">Работа</a></li>
-        <li><a href="#">Учеба</a></li>
-        <li><a href="#">Покупки</a></li>
-        <li><a href="#">Путешествия</a></li>
-        <li><button>Добавить заметку</button></li>
-    </ul>
-</div> *@
 <PageTitle>Welcome</PageTitle>
-
 <h2>ToDo list</h2>
-<CascadingValue Value="@DisplayDeletedItems">
-<Index  @bind-itemgrid="itemgrid" />
-</CascadingValue>
 <div>
-    <button class="btn btn-primary" @onclick="ShowModalAddNew">Add New item</button>
-    <br/>
-    <NavLink href="todoitems">View all items</NavLink>
+    <button class="btn-addnew" @onclick="ShowModalAddNew">Add New item</button>
 </div>
 Show deleted items:<InputCheckbox @bind-Value="DisplayDeletedItems"></InputCheckbox>
-<p>Display deleted = @DisplayDeletedItems</p>
+<br />
+<CascadingValue Value="DisplayDeletedItems">
+    <Index  @bind-itemgrid="itemgrid" />
+</CascadingValue>
+
+<p>Display deleted (HOME) = @DisplayDeletedItems</p>
 
 @code {
 
-    public bool DisplayDeletedItems { get; set; } = false;
+    public bool DisplayDeletedItems { get; set; }
 
     [CascadingParameter] public IModalService BlazoredModal { get; set; } = default!;
 
-    QuickGrid<TodoItem> itemgrid;
+    ViewItems itemgrid;
 
     async Task ShowModalAddNew()
     {        
         var messageForm = BlazoredModal.Show<Additem>();
         var result = await messageForm.Result;
-        await itemgrid.RefreshDataAsync();
+       // itemgrid.RefreshData();
     }
 
     public  void IndexDataChanged(string data)
