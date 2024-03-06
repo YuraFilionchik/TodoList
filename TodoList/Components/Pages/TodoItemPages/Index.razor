@@ -4,7 +4,7 @@
 @using TodoList
 @rendermode InteractiveServer
 
-<ViewItems items="DB.TodoItem.Where(x => (!x.IsDeleted) || DisplayDeletedItems)" @ref="itemgrid"></ViewItems>
+<ViewItems items="DB.TodoItem.Where(x => (!x.IsDeleted) || DisplayDeletedItems)" ItemChanged="ItemChanged" @ref="itemgrid"></ViewItems>
 
 
 @code {
@@ -27,6 +27,13 @@
     {
         if (firstRender)
             await itemgridChanged.InvokeAsync(itemgrid);
+    }
+
+    private void ItemChanged(TodoItem item)
+    {
+        DB.SaveChanges();
+        StateHasChanged();
+
     }
 
     void DeleteItem(TodoItem item)

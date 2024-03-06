@@ -4,7 +4,7 @@
     
     @foreach (var item in items)
     {
-        <Todoelement Item="item"></Todoelement>
+        <Todoelement Item="item" ItemChanged="ItemChanged"></Todoelement>
     }
 </div>
 
@@ -12,5 +12,8 @@
 @code {
     [Parameter]
     public IEnumerable<TodoItem> items { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<TodoItem> ItemChanged { get; set; }
 
 }

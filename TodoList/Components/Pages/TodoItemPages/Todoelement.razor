@@ -1,21 +1,60 @@
 ﻿@rendermode InteractiveServer
+@inject TodoList.Data.ApplicationDbContext DB
 
-<div class="card">
-    <div class="card-header">
-        @Item.Title
+@if (Item.IsDeleted)
+{
+    styleDeleted = "deleted";
+}
+else
+{
+    styleDeleted="";
+}
+
+<div class="todo-card @styleDeleted">
+    <div class="todo-header">
+        @if(Item.IsDeleted)
+        {
+            <span>@Item.Title</span>
+            <h3 class="labelDEL">DELETED</h3>
+        }else
+        {
+            <span>@Item.Title</span>
+        }
+        <input type="checkbox" checked="@Item.IsDone" @oninput="DoneUndone">
+        <button class="close-button" @onclick="DeleteTodo">✕</button>
     </div>
-    <div class="card-body">
-        <div class="card-footer">
-            <span class="card-footer-priority">Priority: @Item.Priority</span>
-            <span class="card-footer-duedate">Due Date: @(Item.DueDate.HasValue ? Item.DueDate.Value.ToShortDateString() : "Not specified")</span>
-        </div>
+    <div class="todo-details">
+        <p>Due Date: @(Item.DueDate.HasValue ? Item.DueDate.Value.ToShortDateString() : "Not specified")</p>
+        <p>Priority: @Item.Priority</p>
+    </div>
+    <div class="todo-tags">
+        @foreach (var tag in Item.Tags.Split(','))
+        {
+            <span class="tag">@tag</span>
+        }
     </div>
 </div>
 
 
-
 @code {
+
     [Parameter]
     public TodoItem Item { get; set; }
 
+    [Parameter]
+    public EventCallback<TodoItem> ItemChanged { get; set; }
+
+    private string styleDeleted { get; set; } = "";
+
+    private void DoneUndone(ChangeEventArgs e)
+    {
+        Item.IsDone = Convert.ToBoolean(e.Value);
+        ItemChanged.InvokeAsync(Item);
+    }
+
+    private void DeleteTodo()
+    {
+        Item.IsDeleted = true;
+        ItemChanged.InvokeAsync(Item);
+    }
 }

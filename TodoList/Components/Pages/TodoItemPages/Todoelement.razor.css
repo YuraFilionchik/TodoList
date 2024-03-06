@@ -1,22 +1,46 @@
-﻿    .card {
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin: 12px;
-        padding: 10px;
-        background-color: #fff;
-        width: 30%;
-    }
+﻿.todo-card {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin-bottom: 16px;
+    width : 30%;
+}
 
-    .card-header {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 8px;
-    }
+.todo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
 
-    .card-body {
-        font-size: 12px;
-    }
+.close-button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+}
 
-.card-footer-duedate {
+.todo-details {
+    margin-top: 8px;
+    font-size: 14px;
+}
 
+.todo-tags {
+    margin-top: 8px;
+}
+
+.tag {
+    background-color: #e0e0e0;
+    color: #333;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-right: 8px;
+    font-size: 12px;
+}
+
+
+.deleted:not(.labelDEL) {
+    text-decoration: line-through;
+    text-decoration-color: red;
 }
