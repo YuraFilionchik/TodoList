@@ -4,7 +4,8 @@
 @using TodoList
 @rendermode InteractiveServer
 
-<ViewItems items="DB.TodoItem.Where(x => (!x.IsDeleted) || DisplayDeletedItems)" ItemChanged="ItemChanged" @ref="itemgrid"></ViewItems>
+<Search @bind-Text="searchText"/> 
+<ViewItems CardStyle="cardStyle" items="DB.TodoItem.Where(x => (!x.IsDeleted) || DisplayDeletedItems).Where(t=>t.Title.Contains(searchText))" ItemChanged="ItemChanged" @ref="itemgrid"></ViewItems>
 
 
 @code {
@@ -21,6 +22,9 @@
     public EventCallback<string> DataChanged { get; set; }
 
     public IQueryable<TodoItem> ItemsToDisplay = default!;
+
+    private string cardStyle = "mini";
+    private string searchText = string.Empty;
 
     //for update state after adding new
     protected override async Task OnAfterRenderAsync(bool firstRender)

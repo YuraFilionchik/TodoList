@@ -1,0 +1,29 @@
+﻿.search-container {
+    position: relative;
+    display: inline-block;
+}
+
+.search-input {
+    padding-right: 30px; /* Оставляем место для кнопки очистки */
+}
+
+.clear-button {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    color: #999;
+    font-size: 16px;
+    cursor: pointer;
+    display: none; /* Скрываем кнопку по умолчанию */
+}
+
+.search-input:not(:placeholder-shown) + .clear-button {
+    display: block; /* Показываем кнопку, когда есть введенный текст */
+}
+
+.clear-button:hover {
+    color: #333; /* Изменяем цвет при наведении */
+}

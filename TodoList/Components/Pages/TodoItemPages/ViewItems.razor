@@ -4,7 +4,15 @@
     
     @foreach (var item in items)
     {
-        <Todoelement Item="item" ItemChanged="ItemChanged"></Todoelement>
+        <TodoElementMini Item="item" ItemChanged="ItemChanged"></TodoElementMini>
+        @* @if (CardStyle=="standart")
+        {
+            <Todoelement Item="item" ItemChanged="ItemChanged"></Todoelement>
+        }
+        else if (CardStyle=="mini")
+        {
+            <TodoElementMini Item="item" ItemChanged="ItemChanged"></TodoElementMini>
+        } *@
     }
 </div>
 
@@ -15,5 +23,8 @@
 
     [Parameter]
     public EventCallback<TodoItem> ItemChanged { get; set; }
+
+    [Parameter]
+    public string CardStyle { get; set; } = "mini";
 
 }

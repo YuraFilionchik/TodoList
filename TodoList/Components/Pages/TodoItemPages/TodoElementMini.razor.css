@@ -1,0 +1,80 @@
+﻿.todo-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease;
+}
+
+    .todo-item:hover {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+.todo-checkbox {
+    margin-right: 10px;
+}
+
+.todo-text {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.todo-delete {
+    background-color: transparent;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    font-size: 18px; /* Увеличиваем размер шрифта для крестика */
+    line-height: 1; /* Убираем дополнительное пространство снизу */
+}
+
+    .todo-delete::before {
+        content: '\2716'; /* Символ Unicode для крестика */
+    }
+
+    .todo-delete:hover {
+        color: #333;
+    }
+
+.todo-checkbox {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #999; /* Добавляет границу */
+
+    border-radius: 4px; /* Закругляет углы границы */
+
+    background-color: #fff; /* Задает белый фон для чекбокса */
+
+    appearance: none; /* Удаляет стандартный стиль чекбокса */
+
+    cursor: pointer; /* Изменяет курсор при наведении */
+}
+
+    /* Стили для состояния "checked" */
+
+    .todo-checkbox:checked {
+        background-color: #4CAF50; /* Зеленый цвет фона для отмеченного чекбокса */
+
+        border-color: #4CAF50; /* Зеленый цвет границы для отмеченного чекбокса */
+    }
+
+        /* Стили для состояния "checked" при наведении */
+
+        .todo-checkbox:checked:hover {
+            background-color: #388E3C; /* Темно-зеленый цвет фона для отмеченного чекбокса при наведении */
+
+            border-color: #388E3C; /* Темно-зеленый цвет границы для отмеченного чекбокса при наведении */
+        }
+
+    .deleted {
+        opacity: 0.5;
+        background-color: #f8d7da;
+        color: #721c24;
+        text-decoration: line-through;
+        box-shadow: none;
+    }

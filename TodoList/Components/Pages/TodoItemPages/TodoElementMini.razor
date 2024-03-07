@@ -1,0 +1,44 @@
+﻿@rendermode InteractiveServer
+
+@if (Item.IsDeleted)
+{
+    styleDeleted = "deleted";
+}
+else
+{
+    styleDeleted = "";
+}
+
+<div class="todo-item @styleDeleted">
+
+    <input type="checkbox" class="todo-checkbox" checked="@Item.IsDone" @oninput="DoneUndone">
+
+    <span class="todo-text">@Item.Title</span>
+
+    <button class="todo-delete" @onclick="DeleteTodo"></button>
+
+</div>
+
+
+@code {
+
+    [Parameter]
+    public TodoItem Item { get; set; }
+
+    [Parameter]
+    public EventCallback<TodoItem> ItemChanged { get; set; }
+
+    private string styleDeleted { get; set; } = "";
+
+    private void DoneUndone(ChangeEventArgs e)
+    {
+        Item.IsDone = Convert.ToBoolean(e.Value);
+        ItemChanged.InvokeAsync(Item);
+    }
+
+    private void DeleteTodo()
+    {
+        Item.IsDeleted = !Item.IsDeleted;
+        ItemChanged.InvokeAsync(Item);
+    }
+}

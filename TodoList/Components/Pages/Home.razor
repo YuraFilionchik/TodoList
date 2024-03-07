@@ -6,6 +6,7 @@
 
 <PageTitle>Welcome</PageTitle>
 <h2>ToDo list</h2>
+
 <div>
     <button class="btn-addnew" @onclick="ShowModalAddNew">Add New item</button>
 </div>
@@ -24,7 +25,7 @@ Show deleted items:<InputCheckbox @bind-Value="DisplayDeletedItems"></InputCheck
     [CascadingParameter] public IModalService BlazoredModal { get; set; } = default!;
 
     ViewItems itemgrid;
-
+ 
     async Task ShowModalAddNew()
     {        
         var messageForm = BlazoredModal.Show<Additem>();

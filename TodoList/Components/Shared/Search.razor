@@ -1,0 +1,27 @@
+﻿<div class="search-container">
+    <InputText class="search-input" @bind-Value="Text" placeholder="Search..."></InputText>
+    <button class="clear-button">&times;</button>
+</div>
+
+@code {
+    private string _text = string.Empty;
+    [Parameter]
+    public string Text
+    {
+        get => _text;
+        set
+        {
+            if (value == _text)
+                return;
+
+            _text = value;
+            if (TextChanged.HasDelegate)
+            {
+                TextChanged.InvokeAsync(_text);
+            }
+        }
+    }
+    [Parameter]
+    public EventCallback<string> TextChanged { get; set; }
+
+}

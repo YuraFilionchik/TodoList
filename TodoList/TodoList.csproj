@@ -34,4 +34,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Components\Shared\Search.razor" />
+  </ItemGroup>
+
 </Project>
