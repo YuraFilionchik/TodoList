@@ -5,7 +5,7 @@
 @rendermode InteractiveServer
 
 <Search @bind-Text="searchText"/> 
-<ViewItems CardStyle="cardStyle" items="DB.TodoItem.Where(x => (!x.IsDeleted) || DisplayDeletedItems).Where(t=>t.Title.Contains(searchText))" ItemChanged="ItemChanged" @ref="itemgrid"></ViewItems>
+<ViewItems CardStyle="cardStyle" items="Items" ItemChanged="ItemChanged" @ref="itemgrid"></ViewItems>
 
 
 @code {
@@ -21,10 +21,20 @@
     [Parameter]
     public EventCallback<string> DataChanged { get; set; }
 
+    //TODO Sort by Undone, duedate
     public IQueryable<TodoItem> ItemsToDisplay = default!;
 
     private string cardStyle = "mini";
     private string searchText = string.Empty;
+    private IQueryable<TodoItem> Items
+    {
+        get
+        {
+            return DB.TodoItem.Where(x => (!x.IsDeleted) || DisplayDeletedItems).
+            Where(t => t.Title.Contains(searchText));
+        }
+        
+    }
 
     //for update state after adding new
     protected override async Task OnAfterRenderAsync(bool firstRender)

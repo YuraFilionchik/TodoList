@@ -9,7 +9,7 @@ else
     styleDeleted = "";
 }
 
-<div class="todo-item @styleDeleted">
+@* <div class="todo-item @styleDeleted" @onclick="((e) => ShowModalEditView(e))">
 
     <input type="checkbox" class="todo-checkbox" checked="@Item.IsDone" @oninput="DoneUndone">
 
@@ -17,16 +17,27 @@ else
 
     <button class="todo-delete" @onclick="DeleteTodo"></button>
 
+</div> *@
+
+<div class="d-flex align-items-center border rounded p-2 my-1 todo-item @styleDeleted">
+    <div class="form-check me-1">
+        <input type="checkbox" class="todo-checkbox" checked="@Item.IsDone" @oninput="DoneUndone">
+    </div>
+    <span class="flex-grow-1 ms-2" @onclick="((e) => ShowModalEditView(e))" >@Item.Title</span>
+    <button class="btn btn-danger btn-sm ms-2 todo-delete" @onclick="DeleteTodo" @onclick:stopPropagation="true">
+        
+    </button>
 </div>
 
-
 @code {
-
     [Parameter]
-    public TodoItem Item { get; set; }
+    public TodoItem? Item { get; set; } = default!;
 
     [Parameter]
     public EventCallback<TodoItem> ItemChanged { get; set; }
+
+    [CascadingParameter] 
+    public IModalService BlazoredModal { get; set; } = default!;
 
     private string styleDeleted { get; set; } = "";
 
@@ -35,10 +46,19 @@ else
         Item.IsDone = Convert.ToBoolean(e.Value);
         ItemChanged.InvokeAsync(Item);
     }
-
     private void DeleteTodo()
     {
         Item.IsDeleted = !Item.IsDeleted;
         ItemChanged.InvokeAsync(Item);
+    }
+
+    async Task ShowModalEditView(MouseEventArgs arg)
+    {
+       // if (arg.ClientX < 100) return; //TODO get Checkbox coordX
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(Item), Item);
+         var messageForm = BlazoredModal.Show<ViewEditItem>(parameters);
+         var result = await messageForm.Result;
+        // itemgrid.RefreshData();
     }
 }

@@ -2,8 +2,6 @@
 @inject TodoList.Data.ApplicationDbContext DB
 @using TodoList
 
-<link rel="stylesheet" href="TodoList.styles.css" />
-
 <div class="row">
     <div class="col-md-4">
         <EditForm method="post" Model="todoItem" OnValidSubmit="SubmitForm" FormName="create" Enhance>
@@ -11,7 +9,7 @@
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
                 <label for="title" class="form-label">Title:</label>
-                <InputText  id="title" @bind-Value="todoItem.Title" class="form-control" />
+                <InputText id="title" @bind-Value="todoItem.Title" class="form-control" />
                 <Autofocus elementId="title"/>
                 <ValidationMessage For="() => todoItem.Title" class="text-danger" /> 
             </div>        
