@@ -4,7 +4,6 @@
 @using TodoList
 @rendermode InteractiveServer
 
-<Search @bind-Text="searchText"/> 
 <ViewItems CardStyle="cardStyle" items="Items" ItemChanged="ItemChanged" @ref="itemgrid"></ViewItems>
 
 
@@ -25,7 +24,9 @@
     public IQueryable<TodoItem> ItemsToDisplay = default!;
 
     private string cardStyle = "mini";
-    private string searchText = string.Empty;
+
+    [Parameter]
+    public string searchText { get; set; } = string.Empty;
     private IQueryable<TodoItem> Items
     {
         get

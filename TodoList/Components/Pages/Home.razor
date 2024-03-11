@@ -2,18 +2,19 @@
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using TodoList.Components.Pages.TodoItemPages
 @inject NavigationManager NavigationManager
+@inject TodoList.Data.ApplicationDbContext DB
 @rendermode InteractiveServer
 
 <PageTitle>Welcome</PageTitle>
-<h2>ToDo list</h2>
-
+<h2>Your ToDo list</h2>
+<Search @bind-Text="search"/>
 <div>
     <button class="btn-addnew" @onclick="ShowModalAddNew">Add New item</button>
 </div>
 Show deleted items:<InputCheckbox @bind-Value="DisplayDeletedItems"></InputCheckbox>
 <br />
 <CascadingValue Value="DisplayDeletedItems">
-    <Index  @bind-itemgrid="itemgrid" />
+    <Index  @bind-itemgrid="itemgrid" searchText=@search />
 </CascadingValue>
 
 <p>Display deleted (HOME) = @DisplayDeletedItems</p>
@@ -22,10 +23,26 @@ Show deleted items:<InputCheckbox @bind-Value="DisplayDeletedItems"></InputCheck
 
     public bool DisplayDeletedItems { get; set; }
 
+    public string search { get; set; } = string.Empty;
+
     [CascadingParameter] public IModalService BlazoredModal { get; set; } = default!;
 
     ViewItems itemgrid;
- 
+
+    IEnumerable<string> Tags{
+        get
+        {
+            return DB.TodoItem
+                     .SelectMany(item => SplitTags(item.Tags))
+                 .Distinct();
+        }
+    }
+
+    IEnumerable<string> SplitTags(string str)
+    {
+        return str.Split(',');
+    }
+
     async Task ShowModalAddNew()
     {        
         var messageForm = BlazoredModal.Show<Additem>();

@@ -1,6 +1,6 @@
 ﻿<div class="search-container">
     <InputText class="search-input" @bind-Value="Text" placeholder="Search..."></InputText>
-    <button class="clear-button">&times;</button>
+    <button class="clear-button" @onclick="(()=>Text=string.Empty)">&times;</button>
 </div>
 
 @code {
@@ -24,4 +24,5 @@
     [Parameter]
     public EventCallback<string> TextChanged { get; set; }
 
+  
 }
