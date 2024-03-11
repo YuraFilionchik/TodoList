@@ -3,44 +3,56 @@
 @using TodoList
 
 <div class="row">
-    <div class="col-md-4">
-        <EditForm method="post" Model="todoItem" OnValidSubmit="SubmitForm" FormName="create" Enhance>
-            <DataAnnotationsValidator />
-            <ValidationSummary class="text-danger" />
-            <div class="mb-3">
-                <label for="title" class="form-label">Title:</label>
-                <InputText id="title" @bind-Value="todoItem.Title" class="form-control" />
-                <Autofocus elementId="title"/>
-                <ValidationMessage For="() => todoItem.Title" class="text-danger" /> 
-            </div>        
-                  
-            <div class="mb-3">
-                <label for="description" class="form-label">Description:</label> 
-                <InputText id="description" @bind-Value="todoItem.Description" class="form-control" /> 
-                <ValidationMessage For="() => todoItem.Description" class="text-danger" /> 
-            </div>        
-            <div class="mb-3">
-                <label for="duedate" class="form-label">DueDate:</label> 
-                <InputDate id="duedate" @bind-Value="todoItem.DueDate" class="form-control" /> 
-                <ValidationMessage For="() => todoItem.DueDate" class="text-danger" /> 
-            </div>        
-            <div class="mb-3">
-                <label for="tags" class="form-label">Tags:</label> 
-                <InputText id="tags" @bind-Value="todoItem.Tags" class="form-control" /> 
-                <ValidationMessage For="() => todoItem.Tags" class="text-danger" /> 
-            </div>        
-            <div class="mb-3">
-                <label for="priority" class="form-label">Priority:</label> 
-                <InputSelect id="priority" @bind-Value="todoItem.Priority" class="form-control">
-                    @foreach (PriorityType priority in Enum.GetValues(typeof(PriorityType)))
-                    {
-                        <option value="@priority">@priority.ToString()</option>
-                    }
-                </InputSelect> 
-                <ValidationMessage For="() => todoItem.Priority" class="text-danger" /> 
-            </div>        
-            <button type="submit" class="btn btn-primary">Create</button>
-        </EditForm>
+    <div class="col-md-10 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title text-center mb-4">@todoItem.Title</h5>
+                <EditForm method="post" Model="todoItem" OnValidSubmit="SubmitForm" FormName="Addnew" Enhance>
+                    <DataAnnotationsValidator />
+                    <ValidationSummary class="text-danger" />
+
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title:</label>
+                        <InputText id="title" @bind-Value="todoItem.Title" class="form-control" />
+                        <Autofocus elementId="title" />
+                        <ValidationMessage For="() => todoItem.Title" class="text-danger" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description:</label>
+                        <InputTextArea id="description" @bind-Value="todoItem.Description" class="form-control" />
+                        <ValidationMessage For="() => todoItem.Description" class="text-danger" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="duedate" class="form-label">DueDate:</label>
+                        <InputDate id="duedate" @bind-Value="todoItem.DueDate" class="form-control" />
+                        <ValidationMessage For="() => todoItem.DueDate" class="text-danger" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="tags" class="form-label">Tags:</label>
+                        <InputText id="tags" @bind-Value="todoItem.Tags" class="form-control" />
+                        <ValidationMessage For="() => todoItem.Tags" class="text-danger" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="priority" class="form-label">Priority:</label>
+                        <InputSelect id="priority" @bind-Value="todoItem.Priority" class="form-control">
+                            @foreach (PriorityType priority in Enum.GetValues(typeof(PriorityType)))
+                            {
+                                <option value="@priority">@priority.ToString()</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="() => todoItem.Priority" class="text-danger" />
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
     </div>
 </div>
 

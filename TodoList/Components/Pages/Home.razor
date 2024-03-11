@@ -6,18 +6,18 @@
 @rendermode InteractiveServer
 
 <PageTitle>Welcome</PageTitle>
-<h2>Your ToDo list</h2>
+<h2 class="d-flex justify-content-center mb-4">Your ToDo list</h2>
 <Search @bind-Text="search"/>
-<div>
-    <button class="btn-addnew" @onclick="ShowModalAddNew">Add New item</button>
+<div class="d-flex justify-content-center mb-4">
+    <button class="myButton" @onclick="ShowModalAddNew">
+        New
+    </button>
 </div>
 Show deleted items:<InputCheckbox @bind-Value="DisplayDeletedItems"></InputCheckbox>
 <br />
 <CascadingValue Value="DisplayDeletedItems">
     <Index  @bind-itemgrid="itemgrid" searchText=@search />
 </CascadingValue>
-
-<p>Display deleted (HOME) = @DisplayDeletedItems</p>
 
 @code {
 

@@ -9,17 +9,8 @@ else
     styleDeleted = "";
 }
 
-@* <div class="todo-item @styleDeleted" @onclick="((e) => ShowModalEditView(e))">
 
-    <input type="checkbox" class="todo-checkbox" checked="@Item.IsDone" @oninput="DoneUndone">
-
-    <span class="todo-text">@Item.Title</span>
-
-    <button class="todo-delete" @onclick="DeleteTodo"></button>
-
-</div> *@
-
-<div class="d-flex align-items-center border rounded p-2 my-1 todo-item @styleDeleted">
+<div class="d-flex align-items-center border rounded p-2 my-1 todo-item-@Item.IsDone @styleDeleted">
     <div class="form-check me-1">
         <input type="checkbox" class="todo-checkbox" checked="@Item.IsDone" @oninput="DoneUndone">
     </div>

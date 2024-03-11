@@ -32,7 +32,8 @@
         get
         {
             return DB.TodoItem.Where(x => (!x.IsDeleted) || DisplayDeletedItems).
-            Where(t => t.Title.Contains(searchText));
+            Where(t => t.Title.Contains(searchText)).OrderBy(i => i.IsDone).
+            ThenBy(item => item.CreatedDate);
         }
         
     }

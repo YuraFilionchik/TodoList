@@ -1,9 +1,19 @@
-﻿.todo-item {
-    box-shadow: 0 5px 7px rgba(0, 0, 0, 0.3);
+﻿.todo-item-False {
+    box-shadow: 0 7px 10px rgba(0, 0, 0, 0.3);
     transition: box-shadow 0.4s ease;
+    background-color: #f9fdaa
 }
 
-    .todo-item:hover {
+    .todo-item-False:hover {
+        box-shadow: 0 10px 13px rgba(0, 0, 0, 0.7);
+    }
+.todo-item-True {
+    box-shadow: 0 5px 7px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.4s ease;
+    background-color: #d7edcf
+}
+
+    .todo-item-True:hover {
         box-shadow: 0 10px 10px rgba(0, 0, 0, 0.7);
     }
 
