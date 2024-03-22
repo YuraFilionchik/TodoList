@@ -15,6 +15,15 @@ else
         <input type="checkbox" class="todo-checkbox" checked="@Item.IsDone" @oninput="DoneUndone">
     </div>
     <span class="flex-grow-1 ms-2" @onclick="((e) => ShowModalEditView(e))" >@Item.Title</span>
+    <div class="ms-auto">
+        @if (!string.IsNullOrEmpty(Item.Tags))
+        {
+            @foreach (var tag in Item.Tags.Split(','))
+            {
+                <span class="badge rounded-pill bg-secondary me-1">@tag.Trim()</span>
+            }
+        }
+    </div>
     <button class="btn btn-danger btn-sm ms-2 todo-delete" @onclick="DeleteTodo" @onclick:stopPropagation="true">
         
     </button>

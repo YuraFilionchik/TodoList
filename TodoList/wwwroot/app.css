@@ -60,3 +60,43 @@ h1:focus {
         position: relative;
         top: 2px;
     }
+
+.navbar {
+    background-color: transparent !important;
+}
+
+.nav-link-custom {
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    background-color: #fff7e6;
+    color: #333;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+    .nav-link-custom:hover {
+        background-color: #ffeeb3;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+    }
+
+.nav-item {
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+.todo-checkbox {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #999; /* Добавляет границу */
+
+    border-radius: 4px; /* Закругляет углы границы */
+
+    background-color: #fff; /* Задает белый фон для чекбокса */
+
+    appearance: none; /* Удаляет стандартный стиль чекбокса */
+
+    cursor: pointer; /* Изменяет курсор при наведении */
+}

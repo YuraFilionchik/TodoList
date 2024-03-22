@@ -27,12 +27,16 @@
 
     [Parameter]
     public string searchText { get; set; } = string.Empty;
+    [Parameter]
+    public string selectedTag { get; set; } = string.Empty;
     private IQueryable<TodoItem> Items
     {
         get
         {
             return DB.TodoItem.Where(x => (!x.IsDeleted) || DisplayDeletedItems).
-            Where(t => t.Title.Contains(searchText)).OrderBy(i => i.IsDone).
+            Where(t => t.Title.Contains(searchText))
+            .Where(t => t.Tags.Contains(selectedTag))
+            .OrderBy(i => i.IsDone).
             ThenBy(item => item.CreatedDate);
         }
         
