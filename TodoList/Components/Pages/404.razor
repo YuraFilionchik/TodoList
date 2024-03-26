@@ -1,0 +1,16 @@
+﻿@page "/404"
+@inject NavigationManager Navigation
+<div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <h3 >Resource Not Found</h3>
+    <br />
+    <img src="/images/404.jpg"/>
+    <br />
+    <Button class="myButton" @onclick="goBack">Home</Button>
+</div>
+
+@code {
+    private void goBack()
+    {
+        Navigation.NavigateTo("/");
+    }
+}

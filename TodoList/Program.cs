@@ -59,13 +59,13 @@ else
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+app.UseStatusCodePagesWithReExecute("/404");
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(TodoList.Client._Imports).Assembly);
-
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
 
