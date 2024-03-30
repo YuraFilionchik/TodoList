@@ -2,7 +2,7 @@
 @inject TodoList.Data.ApplicationDbContext DB
 @using Microsoft.EntityFrameworkCore
 @using TodoList
-@rendermode InteractiveServer
+@* @rendermode InteractiveAuto *@
 
 <ViewItems CardStyle="cardStyle" items="Items" ItemChanged="ItemChanged" @ref="itemgrid"></ViewItems>
 
@@ -20,6 +20,9 @@
     [Parameter]
     public EventCallback<string> DataChanged { get; set; }
 
+    [Parameter]
+    public string userId { get; set; }
+
     //TODO Sort by Undone, duedate
     public IQueryable<TodoItem> ItemsToDisplay = default!;
 
@@ -33,8 +36,9 @@
     {
         get
         {
-            return DB.TodoItem.Where(x => (!x.IsDeleted) || DisplayDeletedItems).
-            Where(t => t.Title.Contains(searchText))
+            return DB.TodoItem.Where(x =>x.UserId == userId)
+            .Where(x => (!x.IsDeleted) || DisplayDeletedItems)
+            .Where(t => t.Title.Contains(searchText))
             .Where(t => t.Tags.Contains(selectedTag))
             .OrderBy(i => i.IsDone).
             ThenBy(item => item.CreatedDate);
@@ -53,7 +57,7 @@
     {
         DB.SaveChanges();
         StateHasChanged();
-
+        
     }
 
     void DeleteItem(TodoItem item)

@@ -63,9 +63,12 @@
 
     [SupplyParameterFromForm]
     public TodoItem todoItem { get; set; } = new() { DueDate=DateTime.Now};
+    [Parameter]
+    public string userId { get; set; }
     protected override void OnInitialized() => BlazoredModal.SetTitle("Enter new task");
     async Task SubmitForm(){
         if (todoItem is null) return;
+        todoItem.UserId = userId;
         DB.TodoItem.Add(todoItem);
         DB.SaveChanges();
         

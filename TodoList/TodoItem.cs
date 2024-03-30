@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using TodoList.Data;
 namespace TodoList;
 
 public class TodoItem
 {
     public int Id { get; set; }
+    public string? UserId { get; set; }
+    ApplicationUser User { get; set; }
     public string Title { get; set; } = string.Empty;
     public bool IsDone { get; set; } = false;
     public string? Description { get; set; }

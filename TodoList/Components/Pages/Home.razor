@@ -1,36 +1,52 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.Components.QuickGrid
+@using Microsoft.EntityFrameworkCore
+@using System.Security.Claims
+@using TodoList.Components.Account
 @using TodoList.Components.Pages.TodoItemPages
+@using Microsoft.AspNetCore.Authorization
+@using TodoList.Data
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Components.Authorization
+@inject IDbContextFactory<ApplicationDbContext> DbContextFactory
 @inject NavigationManager NavigationManager
 @inject TodoList.Data.ApplicationDbContext DB
-@rendermode InteractiveServer
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
+
+@attribute [Authorize]
+
+@* @rendermode InteractiveAuto *@
 
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2 bg-light sidebar">
             <div class="list-group">
+                <AuthorizeView>
                 <button class="list-group-item list-group-item-action" @onclick="(()=>selectedTag = string.Empty)">Show All</button>
                 <br />
                 <!-- Ваши опции фильтра -->
-                @foreach(var t in Tags)
+                 @foreach(var t in Tags)
                 {
                     if (!String.IsNullOrWhiteSpace(t)) {
                         <button class="list-group-item list-group-item-action" @onclick="(()=>selectedTag = t)">@t</button>
                     }
-                }
+                } 
                 <br />
                 Show deleted items:<InputCheckbox @bind-Value="DisplayDeletedItems"> </InputCheckbox>
-                
+                </AuthorizeView>
             </div>
         </div>
         <div class="col-md-8  main-content">
+            
+            <AuthorizeView >
+                <Authorized>
             <main>
                 <!-- Главная зона контента -->
                 <PageTitle>Welcome</PageTitle>
-
-                <h2 class="d-flex justify-content-center mb-4">Your ToDo list</h2>
+                
+                    <h2 class="d-flex justify-content-center mb-4">@user.UserName - ToDo list</h2>
                 <Search @bind-Text="search" />
                 <div class="d-flex justify-content-center mb-4">
                     <button class="myButton" @onclick="ShowModalAddNew">
@@ -41,14 +57,19 @@
                 <br />
 
                 <CascadingValue Value="DisplayDeletedItems">
-                    <Index @bind-itemgrid="itemgrid" searchText=@search selectedTag=@selectedTag/>
+                    <Index userId="@user.Id" @bind-itemgrid="itemgrid" searchText=@search selectedTag=@selectedTag/>
                 </CascadingValue>
             </main>
+                </Authorized>
+                <NotAuthorized>
+                <h2>Who are you?</h2>
+                <br />
+                <NavLink href="/Account/Login">  Login/Register</NavLink>
+                 </NotAuthorized>
+            </AuthorizeView>
         </div>
     </div>
 </div>
-
-
 
 
 @code {
@@ -61,11 +82,15 @@
 
     ViewItems itemgrid;
     public string selectedTag { get; set; } = string.Empty;
-
-    IEnumerable<string> Tags{
+    private ApplicationUser user = new();
+    // [CascadingParameter]
+    // private HttpContext HttpContext { get; set; } = default!;
+    IEnumerable
+     <string> Tags{
         get
         {
-            return DB.TodoItem
+            var Context = DbContextFactory.CreateDbContext();
+            return Context.TodoItem.Where(x=>x.UserId == user.Id)
                     .AsEnumerable()
                     .SelectMany(item => SplitTags(item.Tags))
                     .Distinct();
@@ -78,10 +103,12 @@
     }
 
     async Task ShowModalAddNew()
-    {        
-        var messageForm = BlazoredModal.Show<Additem>();
+    {   
+        var parameters = new ModalParameters()
+          .Add("userId", user.Id);
+        var messageForm = BlazoredModal.Show<Additem>(parameters);
         var result = await messageForm.Result;
-       // itemgrid.RefreshData();
+        // itemgrid.RefreshData();
     }
 
     public  void IndexDataChanged(string data)
@@ -92,4 +119,22 @@
             //StateHasChanged();
         }
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var User = authState.User;
+        user.Id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+         if (User.Identity.IsAuthenticated)
+        {
+            user.UserName = User.Identity.Name;
+        }
+        else
+        {
+            user.UserName = "Anonymous";
+        } 
+    }
+        //user = await UserAccessor.GetRequiredUserAsync(HttpContext);
+    }
+
 }

@@ -12,8 +12,8 @@ using TodoList.Data;
 namespace TodoList.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240303122431_todoList1")]
-    partial class todoList1
+    [Migration("20240330171839_user2")]
+    partial class user2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -259,6 +259,9 @@ namespace TodoList.Migrations
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
