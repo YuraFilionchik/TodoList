@@ -81,10 +81,11 @@
     [CascadingParameter] public IModalService BlazoredModal { get; set; } = default!;
 
     ViewItems itemgrid;
+
     public string selectedTag { get; set; } = string.Empty;
+
     private ApplicationUser user = new();
-    // [CascadingParameter]
-    // private HttpContext HttpContext { get; set; } = default!;
+
     IEnumerable
      <string> Tags{
         get
