@@ -19,6 +19,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+//builder.Services.AddScoped<AuthenticationStateProvider, MyServerAuthenticationStateProvider>();
 builder.Services.AddBlazorBootstrap();
 
 builder.Services.AddAuthentication(options =>

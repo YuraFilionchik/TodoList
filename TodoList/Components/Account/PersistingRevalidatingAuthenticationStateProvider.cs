@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -19,9 +20,7 @@ namespace TodoList.Components.Account
         private readonly IServiceScopeFactory scopeFactory;
         private readonly PersistentComponentState state;
         private readonly IdentityOptions options;
-
         private readonly PersistingComponentStateSubscription subscription;
-
         private Task<AuthenticationState>? authenticationStateTask;
 
         public PersistingRevalidatingAuthenticationStateProvider(
@@ -34,10 +33,10 @@ namespace TodoList.Components.Account
             scopeFactory = serviceScopeFactory;
             state = persistentComponentState;
             options = optionsAccessor.Value;
-
             AuthenticationStateChanged += OnAuthenticationStateChanged;
             subscription = state.RegisterOnPersisting(OnPersistingAsync, RenderMode.InteractiveWebAssembly);
         }
+
 
         protected override TimeSpan RevalidationInterval => TimeSpan.FromMinutes(30);
 
@@ -98,6 +97,27 @@ namespace TodoList.Components.Account
                     });
                 }
             }
+        }
+
+        public async Task LogoutAsync(ClaimsPrincipal User)
+        {
+            await using var scope = scopeFactory.CreateAsyncScope();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var signInManager = scope.ServiceProvider.GetRequiredService<SignInManager<ApplicationUser>>();
+
+            if (User != null)
+            {
+                Console.WriteLine("User " + User.Identity.Name + " logout");
+                await signInManager.SignOutAsync();
+                state.PersistAsJson<UserInfo>(nameof(UserInfo), null); // Удаляем сохраненные данные пользователя
+            }
+        }
+
+        private void NotifyAuthenticationStateChanged(AuthenticationState authenticationState)
+        {
+            var authStateTask = Task.FromResult(authenticationState);
+            authenticationStateTask = authStateTask;
+            OnAuthenticationStateChanged(authStateTask);
         }
 
         protected override void Dispose(bool disposing)

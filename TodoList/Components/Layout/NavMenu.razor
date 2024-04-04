@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
+@using TodoList.Components.Account
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -48,16 +49,20 @@
 
 @code{
 
+
+
     ClaimsPrincipal? user { get; set; }
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         user = authState.User;
-
+        // _masp = (MyServerAuthenticationStateProvider)AuthenticationStateProvider;
     }
 
-    private void Logout()
+    void Logout()
     {
-        NavigationManager.NavigateToLogout("authentication/logout");
+        Console.WriteLine("====LOGOUT=====");
+        var L = (PersistingRevalidatingAuthenticationStateProvider)AuthenticationStateProvider;
+        L.LogoutAsync(user);
     }
 }
