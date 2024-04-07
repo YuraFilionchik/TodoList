@@ -3,6 +3,8 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
 @using TodoList.Components.Account
+@using TodoList.Data
+@inject SignInManager<ApplicationUser> SignInManager
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -31,8 +33,14 @@
                             </NavLink>
                         </li>
                         <li class="nav-item mx-2">
-                            <Button @onclick="Logout">Logout</Button>
-                        </li>
+                            <form action="Account/Logout" method="post">
+                                <AntiforgeryToken />
+                                <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                                <button type="submit" class="nav-link nav-link-custom">
+                                    <span class="oi oi-task" aria-hidden="true"></span> Logout
+                                </button>
+                            </form>
+                        </li>   
                     </Authorized>
                     <NotAuthorized>
                         <li class="nav-item mx-2">
@@ -52,17 +60,12 @@
 
 
     ClaimsPrincipal? user { get; set; }
+    private string? currentUrl;
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         user = authState.User;
-        // _masp = (MyServerAuthenticationStateProvider)AuthenticationStateProvider;
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
     }
 
-    void Logout()
-    {
-        Console.WriteLine("====LOGOUT=====");
-        var L = (PersistingRevalidatingAuthenticationStateProvider)AuthenticationStateProvider;
-        L.LogoutAsync(user);
-    }
 }
