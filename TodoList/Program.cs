@@ -6,6 +6,8 @@ using TodoList.Components.Account;
 using TodoList.Data;
 using Blazored.Modal;
 using System.Configuration;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,7 +52,12 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => {
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
-builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityEmailSender>();
+builder.Services.AddTransient<IEmailSender, EmailSenderMailKit>();
+builder.Services.Configure<EmailConfiguration>(options =>
+{
+    builder.Configuration.GetSection("Email").Bind(options);
+});
 
 var app = builder.Build();
 

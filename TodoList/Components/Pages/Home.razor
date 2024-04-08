@@ -52,6 +52,9 @@
                     <button class="myButton" @onclick="ShowModalAddNew">
                         New
                     </button>
+                            <button class="myButton" @onclick="sendMail">
+                                Test mail
+                            </button>
                 </div >
                 
                 <br />
@@ -126,7 +129,7 @@
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var User = authState.User;
         user.Id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-         if (User.Identity.IsAuthenticated)
+        if (User.Identity.IsAuthenticated)
         {
             user.UserName = User.Identity.Name;
         }
@@ -135,7 +138,12 @@
             user.UserName = "Anonymous";
         } 
     }
-        //user = await UserAccessor.GetRequiredUserAsync(HttpContext);
+
+    async private void sendMail()
+    {
+      //  await EmailSender.SendMailAsync("ura_f@mail.ru", "Test", "Test emailSender");
+    }
+    //user = await UserAccessor.GetRequiredUserAsync(HttpContext);
     }
 
 }
