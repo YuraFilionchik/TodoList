@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.Components.QuickGrid
+@using Microsoft.AspNetCore.Identity.UI.Services
 @using Microsoft.EntityFrameworkCore
 @using System.Security.Claims
 @using TodoList.Components.Account
@@ -12,6 +13,7 @@
 @inject NavigationManager NavigationManager
 @inject TodoList.Data.ApplicationDbContext DB
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IEmailSender EmailSender
 
 
 @attribute [Authorize]
@@ -141,7 +143,7 @@
 
     async private void sendMail()
     {
-      //  await EmailSender.SendMailAsync("ura_f@mail.ru", "Test", "Test emailSender");
+        await EmailSender.SendEmailAsync("ura_f@mail.ru", "Test", "Test emailSender");
     }
     //user = await UserAccessor.GetRequiredUserAsync(HttpContext);
     }

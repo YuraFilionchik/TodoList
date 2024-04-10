@@ -7,7 +7,7 @@ using TodoList.Data;
 namespace TodoList.Components.Account
 {
     // Remove the "else if (EmailSender is IdentityNoOpEmailSender)" block from RegisterConfirmation.razor after updating with a real implementation.
-    internal sealed class IdentityEmailSender : IEmailSender<ApplicationUser>
+    internal sealed class IdentityEmailSender : IEmailSender<ApplicationUser>, IEmailSender
     {
         private readonly IEmailSender _emailSender;
 
@@ -25,6 +25,11 @@ namespace TodoList.Components.Account
 
         public Task SendPasswordResetCodeAsync(ApplicationUser user, string email, string resetCode) =>
             _emailSender.SendEmailAsync(email, "Reset your password", $"Please reset your password using the following code: {resetCode}");
+
+        public Task SendEmailAsync(string email, string subject, string htmlMessage)
+        {
+            return _emailSender.SendEmailAsync(email, subject, htmlMessage);
+        }
     }
 
 

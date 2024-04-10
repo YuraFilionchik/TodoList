@@ -20,7 +20,7 @@
             <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
                 <DataAnnotationsValidator />
                 <h2>Use a local account to log in.</h2>
-                <hr />
+                <hr/>
                 <ValidationSummary class="text-danger" role="alert" />
                 <div class="form-floating mb-3">
                     <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
@@ -55,11 +55,19 @@
             </EditForm>
         </section>
     </div>
-    <div class="col-md-6 col-md-offset-2">
+    <div class="col-md-4 col-md-offset-2">
         <section>
-            <h3>Use another service to log in.</h3>
+            <h3>Login as anonymous</h3>
+
+            <p>This is a common account for everyone to test the service.</p>
+            <br />
+            <p>All actions and notes created will be visible to other anonymous users.</p>
+            <div>
+                <button @onclick="LoginAnonymous" class="w-100 btn btn-lg btn-primary">Log in Anonymous</button>
+            </div>
+           @*  <h3>Use another service to log in.</h3>
             <hr />
-            <ExternalLoginPicker />
+            <ExternalLoginPicker /> *@
         </section>
     </div>
 </div>
@@ -73,6 +81,8 @@
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
 
+    [SupplyParameterFromForm]
+    private InputModelAnon Anon { get; set; } = new();
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
 
@@ -83,6 +93,18 @@
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
         }
+    }
+
+    public async Task LoginAnonymous()
+    {
+        Console.WriteLine("Logining Anonymous");
+        var result = await SignInManager.PasswordSignInAsync(ApplicationUser.AnonymousUserMail, ApplicationUser.AnonymousUserPassword, true, lockoutOnFailure: false);
+        if (result.Succeeded)
+        {
+            Logger.LogInformation("User logged in.");
+            RedirectManager.RedirectTo(ReturnUrl);
+        }
+        Console.WriteLine("Not succeeded anounymous login");
     }
 
     public async Task LoginUser()
@@ -124,5 +146,11 @@
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+    }
+
+    private sealed class InputModelAnon
+    {
+        public string Email { get; set; } = ApplicationUser.AnonymousUserMail;
+        public string Pass { get; set; } = ApplicationUser.AnonymousUserPassword;
     }
 }

@@ -45,12 +45,16 @@
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </EditForm>
     </div>
-    <div class="col-md-6 col-md-offset-2">
-@*         <section>
-            <h3>Use another service to register.</h3>
+    <div class="col-md-3 col-md-offset-2">
+         <section>
+            <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterAnonymousUser" FormName="register">
+          
+        <button type="submit">Register Anounymous user</button>
+        </EditForm>
+   @*         <h3>Use another service to register.</h3>
             <hr />
-            <ExternalLoginPicker />
-        </section> *@
+            <ExternalLoginPicker />*@
+        </section> 
     </div>
 </div>
 
@@ -122,6 +126,43 @@
             throw new NotSupportedException("The default UI requires a user store with email support.");
         }
         return (IUserEmailStore<ApplicationUser>)UserStore;
+    }
+
+    public async Task RegisterAnonymousUser(EditContext editContext)
+    {
+        Console.WriteLine("Register Anonymous");
+        var user = CreateUser();
+        await UserStore.SetUserNameAsync(user, ApplicationUser.AnonymousUserMail, CancellationToken.None);
+        var emailStore = GetEmailStore();
+        await emailStore.SetEmailAsync(user, ApplicationUser.AnonymousUserMail, CancellationToken.None);
+        var result = await UserManager.CreateAsync(user, ApplicationUser.AnonymousUserPassword);
+
+        if (!result.Succeeded)
+        {
+            identityErrors = result.Errors;
+            return;
+        }
+
+        Logger.LogInformation("User created a new account with password.");
+
+        var userId = await UserManager.GetUserIdAsync(user);
+        var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+        var callbackUrl = NavigationManager.GetUriWithQueryParameters(
+            NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
+            new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
+
+        // await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
+        NavigationManager.NavigateTo(callbackUrl);
+        if (UserManager.Options.SignIn.RequireConfirmedAccount)
+        {
+            RedirectManager.RedirectTo(
+                "Account/RegisterConfirmation",
+                new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
+        }
+
+        await SignInManager.SignInAsync(user, isPersistent: false);
+        RedirectManager.RedirectTo(ReturnUrl);
     }
 
     private sealed class InputModel
