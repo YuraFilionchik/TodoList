@@ -15,7 +15,7 @@
 <h1>Log in</h1>
 <div class="row">
     <div class="col-md-4">
-        <section>
+         <section>
             <StatusMessage Message="@errorMessage" />
             <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
                 <DataAnnotationsValidator />
@@ -53,7 +53,7 @@
                     </p>
                 </div>
             </EditForm>
-        </section>
+        </section> 
     </div>
     <div class="col-md-4 col-md-offset-2">
         <section>
@@ -62,9 +62,9 @@
             <p>This is a common account for everyone to test the service.</p>
             <br />
             <p>All actions and notes created will be visible to other anonymous users.</p>
-            <div>
-                <button @onclick="LoginAnonymous" class="w-100 btn btn-lg btn-primary">Log in Anonymous</button>
-            </div>
+            <p>
+                <a href="@(NavigationManager.GetUriWithQueryParameters("Account/LoginAnonymous", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Login as Anonymous</a>
+            </p>
            @*  <h3>Use another service to log in.</h3>
             <hr />
             <ExternalLoginPicker /> *@
@@ -79,10 +79,8 @@
     private HttpContext HttpContext { get; set; } = default!;
 
     [SupplyParameterFromForm]
-    private InputModel Input { get; set; } = new();
+    private InputModel Input { get; set; } = new InputModel();
 
-    [SupplyParameterFromForm]
-    private InputModelAnon Anon { get; set; } = new();
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
 
@@ -106,7 +104,11 @@
         }
         Console.WriteLine("Not succeeded anounymous login");
     }
-
+    private void TestFunc()
+    {
+        errorMessage="TEST";
+        Console.WriteLine("TEST");
+    }
     public async Task LoginUser()
     {
         // This doesn't count login failures towards account lockout
@@ -147,10 +149,5 @@
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
     }
-
-    private sealed class InputModelAnon
-    {
-        public string Email { get; set; } = ApplicationUser.AnonymousUserMail;
-        public string Pass { get; set; } = ApplicationUser.AnonymousUserPassword;
-    }
+   
 }
