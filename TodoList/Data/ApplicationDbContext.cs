@@ -4,9 +4,15 @@ using TodoList;
 
 namespace TodoList.Data
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<TodoList.TodoItem> TodoItem { get; set; }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
+
+        public DbSet<TodoItem> TodoItem { get; set; }
         public DbSet<testItem> testItem { get; set; }
     }
+
 }

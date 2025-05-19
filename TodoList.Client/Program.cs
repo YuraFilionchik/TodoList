@@ -9,4 +9,10 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
 builder.Services.AddBlazoredModal();
-await builder.Build().RunAsync();
+var app = builder.Build();
+
+await app.RunAsync();
+
+#region add anonymous user for testing
+
+#endregion

@@ -8,6 +8,7 @@ using Blazored.Modal;
 using System.Configuration;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
+using TodoList;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,5 +87,5 @@ app.MapRazorComponents<App>()
     .AddAdditionalAssemblies(typeof(TodoList.Client._Imports).Assembly);
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
-
+await app.EnsureAnonymousUserAsync();
 app.Run();

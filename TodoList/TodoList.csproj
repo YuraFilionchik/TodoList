@@ -40,4 +40,9 @@
     <None Include="Components\Shared\Search.razor" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Migrations\" />
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
