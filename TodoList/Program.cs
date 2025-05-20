@@ -52,7 +52,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => {
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
-
+builder.Services.AddTelerikBlazor();
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityEmailSender>();
 builder.Services.AddTransient<IEmailSender, EmailSenderMailKit>();
 builder.Services.Configure<EmailConfiguration>(options =>
